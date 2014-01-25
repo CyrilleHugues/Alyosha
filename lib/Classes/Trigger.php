@@ -2,9 +2,13 @@
 
 namespace Classes;
 
-interface Trigger
+abstract class Trigger
 {
-    public function __construct($pluginName);
-    public function getEvents();
-    public function process($event, array $input);
+    var $plugin;
+    public function __construct($pluginName)
+    {
+        $this->plugin = $pluginName;
+    }
+    public abstract function getEvents();
+    public abstract function process($event, array $input);
 }

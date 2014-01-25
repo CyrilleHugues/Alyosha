@@ -8,9 +8,9 @@ class Alyosha
     private $events = array();
     private $triggers = array();
 
-    public function __construct(array $config) 
+    public function __construct() 
     {
-        $this->config = $config;
+        $this->config = Config::$cfg;
         foreach ($config['plugins'] as $plugin)
         {
             $tools = Classes\Plugin::init($plugin);
@@ -72,7 +72,6 @@ class Alyosha
             if ($e->isHappening($this->input))
             {
                 array_push($events, $e->getName());
-                echo $e->getName()."\n";
             }
         }
         return $events;

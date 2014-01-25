@@ -3,17 +3,12 @@
 namespace plugins\CorePlugin\Trigger;
 
 use Classes\Trigger;
-use plugins\CorePlugin\Config;
 
-class Authentification implements Trigger 
+class Identification extends Trigger 
 {
-    var $plugin;
-    public function __construct($pluginName) {
-        $this->plugin = $pluginName;
-    }
-
-    public function getEvents() {
-        return array("AUTH");
+    public function getEvents() 
+    {
+        return array("CorePluginIDENT");
     }
 
     public function process($event, array $input) {

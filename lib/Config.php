@@ -1,11 +1,15 @@
 <?php
-return array(
-    'server'    =>  'irc.iiens.net',
-    'port'      =>  6667,
-    'chans'     =>  array(
-                        '#neet'
-                    ),
-    'plugins'   =>  array(
-                        'CorePlugin'
-                    )
-);
+
+class Config {
+    public static $cfg = array(
+        'server'    =>  'irc.iiens.net',
+        'port'      =>  6667,
+        'nickname'  =>  'Alyosha',
+        'chans'     =>  array(
+                            '#neet'
+                        ),
+        'plugins'   =>  array(
+                            'CorePlugin'
+                        )
+    );
+}

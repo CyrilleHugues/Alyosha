@@ -4,17 +4,9 @@ namespace plugins\CorePlugin\Event;
 
 use Classes\Event;
 
-class NeedAuth implements Event
+class NeedIdent extends Event
 {
-    var $name = "AUTH";
-    var $plugin;
-    public function __construct($pluginName) {
-        $this->plugin = $pluginName;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
+    public $name = "IDENT";
 
     public function isHappening(array $input) {
         $resp = false;
