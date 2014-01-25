@@ -98,22 +98,6 @@ class Alyosha
                 }
             }
         }
-        /*
-        if ($this->input[0] == 'PING')
-        {
-            $resp = "PONG ".  $this->input[1];
-            $this->send($resp);
-        }
-        if (count ($this->input) >= 5 && $this->input[4]=="Found")
-        {
-            $nick = $this->config['nick'];
-            $mess = "USER $nick agrume.pl $nick :$nick";
-            $this->send($mess);
-            $this->send("NICK $nick");
-        }
-        if (count($this->input) ==7 && $this->input[1] == 376)
-            $this->send ("JOIN #neet");
-         */
         return $sign;
     }
     
