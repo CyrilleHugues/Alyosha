@@ -2,7 +2,7 @@
 
 require 'lib/Autoloader.php';
 
-$config = include 'lib/Config.php';;
+$config = include 'lib/Config.php';
 
-$bot = new Core($config);
+$bot = new Alyosha($config);
 $bot->run();
