@@ -2,12 +2,13 @@
 
 class Config {
     public static $cfg = array(
-        'server'    =>  'irc.iiens.net',
+        'server'    =>  'irc.xxx.xxx',
         'port'      =>  6667,
-        'nickname'  =>  'Alyosha',
-        'adminPassword' => 'TheCakeMayHappen',
+        'nickname'  =>  'xxxxx',
+        'adminPassword' => 'xxxxxx',
         'chans'     =>  array(
-                            "#neet"
+                            "#xxxx",
+                            "#xxxx"
                         ),
         'plugins'   =>  array(
                             'Required\Core',
@@ -16,7 +17,6 @@ class Config {
                             'Required\Channel',
                             'Required\Controls',
                             'Required\Logger',
-                            'MyPlugins\Houhou'
                         )
     );
 }
