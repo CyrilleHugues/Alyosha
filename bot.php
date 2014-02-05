@@ -1,6 +1,6 @@
 <?php
 
-require 'lib/Autoloader.php';
+include 'lib/Autoloader.php';
 
-$bot = new Alyosha();
+$bot = new \App\Core\Alyosha();
 $bot->run();
