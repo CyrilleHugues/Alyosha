@@ -33,9 +33,9 @@ class Channel extends Plugin
                     $events[] = $this->pluginName."/DISPLAY_TOPIC";
                     break;
                 
-                // Affichage du owner du chan et de la date de création
+                // Affichage de la date et de l'auteur de la derniere modification du topic
                 case '333':
-                    $events[] = $this->pluginName."/DISPLAY_REGISTERED_INFO";
+                    $events[] = $this->pluginName."/DISPLAY_TOPIC_INFO";
                     break;
                 
                 // Affichage des users sur le chan
