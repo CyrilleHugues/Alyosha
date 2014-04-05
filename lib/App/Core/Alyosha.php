@@ -11,7 +11,10 @@ class Alyosha
     public function __construct() 
     {
         // Instancing Container prior to any usage.
-        $c = Container::getInstance();
+        Container::getInstance();
+        $this->eg = new EventGenerator();
+        $this->eh = new EventHandler();
+
     }
 
     public function run()
@@ -23,32 +26,14 @@ class Alyosha
             if (count($input) == 0)
                 continue;
             
-            $events = array();
-            foreach (Container::getInstance()->plugins as $plugin) 
-            {
-                try {
-                    $evs = $plugin->getEvents($input);
-                    if ($evs != null){
-                        $events = array_merge($events,$evs);
-                    }
-                }
-                catch (Exception $e)
-                {
-                    $key = array_search($plugin, Container::getInstance()->plugins);
-                    if ($key != FALSE)
-                    {
-                        unset(Container::getInstance()->plugins[$key]);
-                    }
-                }
-            }
-            $events = array_unique($events);
-            echo implode(" ", $input);
+            $events = $this->eg->getEvents();
+
             if (count($events)==0)
-            {
                 continue;
-            }
-            
-            $messages = array();
+
+            $messages = $this->eh->processEvents($events);
+
+            // User plugin event handling
             foreach (Container::getInstance()->plugins as $plugin)
             {
                 try {
