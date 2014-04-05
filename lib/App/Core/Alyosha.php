@@ -14,8 +14,7 @@ class Alyosha
         // Juste pour que le container soit initialisé
         $c = Container::getInstance();
     }
-    
-    // A Faire: unload les plugins qui failent avec un try catch
+
     public function run()
     {
         $this->connexion = new Connexion(\Config::$cfg['server'], \Config::$cfg['port']);
@@ -44,7 +43,7 @@ class Alyosha
                 }
             }
             $events = array_unique($events);
-            //echo implode(" ", $input);
+            echo implode(" ", $input);
             if (count($events)==0)
             {
                 continue;
