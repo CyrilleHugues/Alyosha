@@ -7,11 +7,10 @@ use Exception;
 class Alyosha
 {
     private $connexion;
-    private $plugins = array();
     
     public function __construct() 
     {
-        // Juste pour que le container soit initialisé
+        // Instancing Container prior to any usage.
         $c = Container::getInstance();
     }
 
