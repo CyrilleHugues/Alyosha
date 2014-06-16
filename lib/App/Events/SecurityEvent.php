@@ -32,9 +32,9 @@ class SecurityEvent
                     $events[] = "Security/LOGOUT";
                 }
             }
-            if (preg_match('/^!exit/', $infos['message'])==1)
+            if (preg_match('/^!quit/', $infos['message'])==1)
             {
-                $events[] = "Security/EXIT";
+                $events[] = "Security/QUIT";
             }
         }
         return $events;

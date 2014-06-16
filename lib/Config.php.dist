@@ -11,12 +11,6 @@ class Config {
                             "#xxxx"
                         ),
         'plugins'   =>  array(
-                            'Required\Core',
-                            'Required\Security',
-                            'Required\PluginWorker',
-                            'Required\Channel',
-                            'Required\Controls',
-                            'Required\Logger',
-                        )
+                        ),
     );
 }

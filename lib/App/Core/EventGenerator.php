@@ -9,7 +9,7 @@
 namespace App\Core;
 
 use App\Events\ChannelEvent;
-use App\Events\CoreEvent;
+use App\Events\ServerEvent;
 use App\Events\PluginWorkerEvent;
 use App\Events\SecurityEvent;
 
@@ -18,7 +18,7 @@ class EventGenerator {
     {
         $this->eventCreators = [];
         $this->eventCreators[] = new ChannelEvent();
-        $this->eventCreators[] = new CoreEvent();
+        $this->eventCreators[] = new ServerEvent();
         $this->eventCreators[] = new PluginWorkerEvent();
         $this->eventCreators[] = new SecurityEvent();
     }

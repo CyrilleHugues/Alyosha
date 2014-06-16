@@ -2,7 +2,7 @@
 
 namespace Plugins\Required;
 
-use App\Plugin\Plugin;
+use App\Core\Plugin;
 
 class Controls extends Plugin
 {

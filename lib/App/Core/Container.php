@@ -36,6 +36,11 @@ class Container
      */
     public $plugins = array();
 
+    /**
+     * Ask gently the program to stop
+     * @var boolean
+     */
+    public $should_stop;
 
     private function __construct() {
         foreach (\Config::$cfg['plugins'] as $pluginName) {

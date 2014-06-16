@@ -2,7 +2,7 @@
 
 namespace Plugins\MyPlugins;
 
-use App\Plugin\Plugin;
+use App\Core\Plugin;
 use App\Core\Container;
 
 class Houhou extends Plugin

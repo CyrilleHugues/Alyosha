@@ -2,7 +2,7 @@
 
 namespace Plugins\Required;
 
-use App\Plugin\Plugin;
+use App\Core\Plugin;
 
 class Logger extends Plugin
 {

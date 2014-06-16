@@ -28,4 +28,4 @@ class EventHandler
 
         return $messages;
     }
-} 
+}

@@ -20,7 +20,8 @@ class Alyosha
     public function run()
     {
         $this->connexion = new Connexion(\Config::$cfg['server'], \Config::$cfg['port']);
-        while (true)
+        $events = [];
+        while ("")
         {
             $input = $this->connexion->receive();
             if (count($input) == 0)
