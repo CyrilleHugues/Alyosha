@@ -3,6 +3,7 @@
 namespace Alyosha\Core;
 
 use Alyosha\Modules\IRC\IrcModule;
+use Alyosha\Modules\ChatBot\ChatModule;
 
 /**
  * Container is a singleton class referencing all the modules of the bot.
@@ -18,7 +19,8 @@ class Container
 	private function __construct()
 	{
 		$this->modules = [
-			new IrcModule()
+			new IrcModule(),
+			new ChatModule(),
 		];
 
 		foreach ($this->modules as $key => $module) {
@@ -46,7 +48,9 @@ class Container
 		/** @var Event[] $events */
 		$events = [];
 		foreach ($this->modules as $module) {
-			$events = array_merge($events, $module->getEvents());
+			$moduleEvents = $module->getEvents();
+			if (empty($moduleEvents)) continue;
+			$events = array_merge($events, $moduleEvents);
 		}
 
 		foreach ($events as $event) {
@@ -59,6 +63,7 @@ class Container
 
 	private function notify(Event $event)
 	{
+		if (!array_key_exists($event->getName(), $this->subscribers)) return;
 		foreach ($this->subscribers[$event->getName()] as $key) {
 			$this->modules[$key]->notify($event);
 		}

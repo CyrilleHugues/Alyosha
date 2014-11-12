@@ -1,11 +1,12 @@
 <?php
 
+namespace Alyosha\Core;
+
 /**
  * Class Event: *wink* symfony/EventDispatcher/Event.php
  */
-abstract class Event
+class Event
 {
-
 	protected $propagationStopped = false;
 
 	protected $name;
@@ -19,7 +20,7 @@ abstract class Event
 
 	public function isHaltSignal()
 	{
-		return $haltSignal;
+		return $this->haltSignal;
 	}
 
 	public function setName($name)
@@ -29,7 +30,7 @@ abstract class Event
 
 	public function getName()
 	{
-		return $name;
+		return $this->name;
 	}
 
 	public function stopPropagation()

@@ -2,6 +2,8 @@
 
 namespace Alyosha\Modules\IRC;
 
+use Alyosha\Core\Event;
+
 class IrcModule
 {
 	private $connexion;
@@ -27,125 +29,157 @@ class IrcModule
 		];
 	}
 
-	public function notify(Event $event){}
+	public function notify(Event $event){
+        if ($event->getName() == "irc.publish"){
+            $this->connexion->send([
+                ["PRIVMSG", $event->getChannel()." :".$event->getMessage()]
+            ]);
+        }
+    }
 
 	public function getEvents()
 	{
 		$input = $this->connexion->receive();
 		$event = $this->extractEvent($input);
+
+        if ($event->getAction() === null) return [];
 		// ALWAYS do your own treatment before notifying other modules
-		$this->preTreatment($input);
-		$events = $this->generateEvents();
+		$this->preTreatment($event);
+		$events = $this->generateEvents($event);
+        var_dump($events);
 		return $events;
 	}
 
+    public function generateEvents(IrcEvent $event)
+    {
+        $event->setName("irc.".$event->getAction());
+        $events = [$event];
+        if ($event->getName() == "irc.message") {
+            if ($event->getChannel() == Config::getParam("nickname")) {
+                $e = $event->clone_ev();
+                $e->setName("irc.private_message");
+                $events[] = $e;
+            } else {
+                $e = $event->clone_ev();
+                $e->setName("irc.public_message");
+                $events[] = $e;
+            }
+            if (strpos($event->getMessage, Config::getParam('nickname'))) {
+                $e = $events[count($events) - 1]->clone_ev();
+                $e->setName("irc.hilight");
+                $events[] = $e;
+            }
+        } elseif ($event->getName() == "irc.kick" && $event->getTarget() == Config::getParam("nickname")) {
+            $e = $event->clone_ev();
+            $e->setName("irc.is_kicked");
+            $events[] = $e;
+        } elseif ($event->getName() == "irc.invite" && $event->getTarget() == Config::getParam("nickname")) {
+            $e = $event->clone_ev();
+            $e->setName("irc.is_invited");
+            $events[] = $e;
+        }
+
+        return $events;
+    }
+
 	public function extractEvent($input)
 	{
-		$event = new Event();
+		$event = new IrcEvent();
 		$spaces = explode(' ', $input);
 		if ($spaces[0] == "PING") {
 			$event->setAction("ping");
-			$event->setMessage($spaces[2]);
-		} elseif (count($input)>=5 && $input[4]=="Found") {
+			$event->setMessage($spaces[1]);
+		} elseif (count($spaces)>=5 && $spaces[4]=="Found") {
+            // this condition is pretty saddening ... saddening but working :B
 			$event->setAction("ident");
-		} else (count($spaces) >= 2) {
-			switch ($input[1]) {
-				// Fin du MOTD
-			case '376':
-				$event->setAction("motd_end");
-				break;
+		} elseif (count($spaces) >= 2) {
+            $user = substr($spaces[0], 1);
+            $user = explode('!', $user);
+			switch ($spaces[1]) {
+				// Fin du MOTD - time to join channels
+                case '376':
+                    $event->setAction("motd_end");
+                    break;
+                // Join d'un user sur le chan
+                case 'JOIN':
+                    $event->setAction("join");
+                    $event->setUsername($user[0]);
+                    $event->setHostname($user[1]);
+                    $event->setChannel($spaces[2]);
+                    break;
 
-				// Affichage du topic
-			case '332':
-				$event->setAction("motd_end");
-				$event->setMessage($spaces[2]);
-				break;
+                // Depart d'un user du chan
+                case 'PART':
+                    $event->setAction("part");
+                    $event->setUsername($user[0]);
+                    $event->setHostname($user[1]);
+                    $event->setChannel($spaces[2]);
+                    if (count($spaces) > 3) {
+                        $message = implode(" ", array_slice($spaces, 3));
+                        $event->setMessage($message);
+                    }
+                    break;
 
-				// Affichage de la date et de l'auteur de la derniere modification du topic
-			case '333':
-				$events[] = $this->pluginName."/DISPLAY_TOPIC_INFO";
-				break;
+                // message
+                case 'PRIVMSG':
+                    $event->setAction("message");
+                    $event->setUsername($user[0]);
+                    $event->setHostname($user[1]);
+                    $event->setChannel($spaces[2]);
+                    $message = implode(" ", array_slice($spaces, 3));
+                    $event->setMessage(substr($message, 1));
+                    break;
 
-				// Affichage des users sur le chan
-			case '353':
-				$events[] = $this->pluginName."/NAMES";
-				break;
+                case 'KICK':
+                    $event->setAction("kick");
+                    $event->setUsername($user[0]);
+                    $event->setHostname($user[1]);
+                    $event->setChannel($spaces[2]);
+                    $event->setTarget($spaces[3]);
+                    $message = implode(" ", array_slice($spaces, 4));
+                    $event->setMessage(substr($message, 1));
+                    break;
 
-				// Fin d'affichage des users sur le chan
-			case '366':
-				$events[] = $this->pluginName."/NAMES_END";
-				break;
-
-				// Join d'un user sur le chan
-			case 'JOIN':
-				$events[] = $this->pluginName."/JOIN";
-				break;
-
-				// Depart d'un user du chan
-			case 'PART':
-				$events[] = $this->pluginName."/PART";
-				break;
-
-				// Kick d'un user d'un chan
-			case 'KICK':
-				$events[] = $this->pluginName."/KICK";
-				break;
-
-				// message
-			case 'PRIVMSG':
-				$events[] = $this->pluginName."/PRIVMSG";
-				$infos = Container::extractMsgInfo($input);
-				if ($infos['where'] == \Config::$cfg['nickname'])
-				{
-					$events[] = $this->pluginName."/QUERY";
-					if ($infos['hostname'] == Container::getInstance()->get('admin'))
-					{
-						$events[] = $this->pluginName."/SECURED_QUERY";
-					}
-				}
-				else
-				{
-					$events[] = $this->pluginName."/PUBLIC";
-					if (preg_match('/'.\Config::$cfg['nickname'].'/', $infos['message']) == 1)
-					{
-						$events[] = $this->pluginName."/HILIGHT";
-					}
-				}
-				break;
-
-			case 'KICK':
-				$events[] = $this->pluginName."/KICK";
-				$infos = Container::extractMsgInfo($input);
-				if ($infos['cible'] == \Config::$cfg['nickname']){
-					$events[] = $this->pluginName."/WAS_KICKED";
-				}
-				break;
-			case 'INVITE':
-				$events[] = $this->pluginName."/INVITE";
-				$infos = Container::extractMsgInfo($input);
-				if ($infos['where'] == \Config::$cfg['nickname']){
-					$events[] = $this->pluginName."/WAS_INVITED";
-				}
-				break;
+                case 'INVITE':
+                    $event->setAction("invite");
+                    $event->setUsername($user[0]);
+                    $event->setHostname($user[1]);
+                    $event->setTarget($spaces[2]);
+                    $event->setChannel(substr($spaces[3], 1));
+				    break;
+                default:
+                    $event->setMessage($input);
 			}
 		}
 
-		echo implode(" ", $input);
+		return $event;
 	}
 
-	private function preTreatment(array $input)
+	private function preTreatment(IrcEvent $event)
 	{
-		if ($input[0] == "PING") {
-			$this->connexion->send([["PONG", $input[1]]]);
-		}
-		if (count($input)>=5 && $input[4]=="Found") {
-			$username = Config::getParam('nickname', "Tanche_".rand());
+        if ($event->getAction() == "ping") {
+            $this->connexion->send([["PONG", $event->getMessage()]]);
+        }
+        if ($event->getAction() == "ident") {
+            $username = Config::getParam('nickname', "Tanche_".rand());
 
-			$this->connexion->send([
-				["NICK", $username],
-				["USER","$username localhost.com $username :$username"],
-			]);
-		}
+            $this->connexion->send([
+                ["NICK", $username],
+                ["USER","$username localhost.com $username :$username"],
+            ]);
+        }
+        if ($event->getAction() == "motd_end"){
+            $this->connexion->send([
+                ["JOIN", "#pulco"]
+            ]);
+        }
+
+        /** @Todo remove this code */
+        if ($event->getAction() == "invite" && $event->getTarget() == Config::getParam("nickname")){
+            $this->connexion->send([
+                ["JOIN", $event->getChannel()]
+            ]);
+        }
 	}
 }
 
