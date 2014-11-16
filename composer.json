@@ -6,6 +6,7 @@
             "email": "cyrille.hugues@gmail.com"
         }
     ],
+    "description": "ToDo",
     "require": {
     	"php": ">=5.3.2"
     },

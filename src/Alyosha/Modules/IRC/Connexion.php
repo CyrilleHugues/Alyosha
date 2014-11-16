@@ -27,7 +27,8 @@ class Connexion
 
 	public function fire()
 	{
-		$this->socket = fsockopen($this->server, $this->port);
+        $this->socket = fsockopen($this->server, $this->port);
+        socket_set_blocking($this->socket, 0);
 	}
 
 	public function receive()

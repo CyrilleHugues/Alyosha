@@ -56,7 +56,6 @@ class ChatModule
 		if ( ! array_key_exists($word, $this->brain) ) $this->brain[$word] = array();
 		$this->brain[$word][] = ".";
 
-		////////////
 		// Generate a Markov Chain based on a random word from the sentence
  
 		$word = $words[array_rand($words)];
@@ -82,3 +81,4 @@ class ChatModule
 		$this->events[] = $responseEvent;
 	}
 }
+
