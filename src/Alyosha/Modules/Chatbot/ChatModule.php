@@ -4,8 +4,9 @@ namespace Alyosha\Modules\Chatbot;
 
 use Alyosha\Modules\IRC\IrcEvent;
 use Alyosha\Core\Event;
+use Alyosha\Core\ModuleInterface;
 
-class ChatModule
+class ChatModule implements ModuleInterface
 {
 	private $brain = [];
 
@@ -14,10 +15,14 @@ class ChatModule
 	public function fire()
 	{}
 
+    public function getName()
+    {
+        return "chat_module";
+    }
 	public function getTriggers()
 	{
 		return [
-			'irc.message' => "compute"
+			'irc.message'
 		];
 	}
 

@@ -11,20 +11,21 @@ use Alyosha\Modules\Chatbot\ChatModule;
  */
 class Container
 {
-    private static $instance = null;
     private $willHalt = false;
     private $modules = [];
     private $subscribers = [];
 
-    private function __construct()
+    public function __construct()
     {
         $this->modules = [
             new IrcModule(),
             new ChatModule(),
         ];
 
+        $this->checkIfModulesAreCompatible($this->modules);
+
         foreach ($this->modules as $key => $module) {
-            foreach (array_keys($module->getTriggers()) as $eventName) {
+            foreach ($module->getTriggers() as $eventName) {
                 if (!array_key_exists($eventName, $this->subscribers)) {
                     $this->subscribers[$eventName] = [];
                 }
@@ -35,12 +36,13 @@ class Container
         $this->instance = $this;
     }
 
-    public static function getInstance()
-    {
-        if (self::$instance == null) {
-            self::$instance = new Container();
+    public function checkIfModulesAreCompatible(array $modules) {
+        foreach ($modules as $module) {
+            if ( ! $module instanceof ModuleInterface){
+                print $module->getName() . "does not implement ModuleInterface.\n";
+                exit();
+            }
         }
-        return self::$instance;
     }
 
     public function beat()
@@ -71,7 +73,10 @@ class Container
 
     public function fire()
     {
-        array_map(function($o){$o->fire();}, $this->modules);
+        array_map(
+            function($o){$o->fire();},
+            $this->modules
+        );
     }
 
     public function willHalt()

@@ -10,7 +10,7 @@ class Alyosha
 
 	public function __construct()
 	{
-		$this->container = Container::getInstance();
+		$this->container = new Container();
 	}
 
 	public function run()

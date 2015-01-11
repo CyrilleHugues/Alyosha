@@ -3,8 +3,9 @@
 namespace Alyosha\Modules\IRC;
 
 use Alyosha\Core\Event;
+use Alyosha\Core\ModuleInterface;
 
-class IrcModule
+class IrcModule implements ModuleInterface
 {
 	private $connexion;
 	private $events = [];
@@ -14,6 +15,11 @@ class IrcModule
 		$this->connexion = Connexion::getInstance();
 	}
 
+    public function getName()
+    {
+        return "irc_module";
+    }
+
 	public function fire()
 	{
 		$this->connexion->fire();
@@ -22,10 +28,7 @@ class IrcModule
 	public function getTriggers()
 	{
 		return [
-			"irc.publish" => "sendMessage",
-			"irc.quit" => "quit",
-			"irc.kick" => "kick",
-			"irc.join" => "join",
+			"irc.publish",
 		];
 	}
 
@@ -46,7 +49,6 @@ class IrcModule
 		// ALWAYS do your own treatment before notifying other modules
 		$this->preTreatment($event);
 		$events = $this->generateEvents($event);
-        var_dump($events);
 		return $events;
 	}
 
@@ -64,7 +66,7 @@ class IrcModule
                 $e->setName("irc.public_message");
                 $events[] = $e;
             }
-            if (strpos($event->getMessage, Config::getParam('nickname'))) {
+            if (strpos($event->getMessage(), Config::getParam('nickname'))) {
                 $e = $events[count($events) - 1]->clone_ev();
                 $e->setName("irc.hilight");
                 $events[] = $e;

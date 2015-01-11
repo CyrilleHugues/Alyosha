@@ -2,10 +2,7 @@
 
 namespace Alyosha\Core;
 
-/**
- * Class Event: *wink* symfony/EventDispatcher/Event.php
- */
-class Event
+class Event implements EventInterface
 {
 	protected $propagationStopped = false;
 
