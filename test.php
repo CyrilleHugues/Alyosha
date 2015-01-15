@@ -3,6 +3,8 @@ require "vendor/autoload.php";
 
 use Alyosha\Alyosha;
 
-$test = new Alyosha();
-$test->run();
+proc_nice(20);
+
+$bot = new Alyosha();
+$bot->run();
 

@@ -2,22 +2,31 @@
 
 namespace Alyosha;
 
-use Alyosha\Core\Container;
+use Alyosha\Core\EventDispatcher;
+use Alyosha\Modules\IRC\IrcModule;
+use Alyosha\Modules\Chatbot\ChatModule;
 
 class Alyosha
 {
-	private $container;
+	private $ed;
 
 	public function __construct()
-	{
-		$this->container = new Container();
+    {
+        $modules = [
+            new IrcModule(),
+            new ChatModule(),
+        ];
+		$this->ed = new EventDispatcher($modules);
 	}
 
 	public function run()
-	{
-		$this->container->fire();
-		while (!$this->container->willHalt()) {
-			$this->container->beat();
+    {
+        print "Starting the bot ...\n";
+		$this->ed->fireModules();
+		while (!$this->ed->willHalt()) {
+			$this->ed->beat();
+            // Wait to lessen cpu charge
+            usleep(50000);
 		}
 
 	}

@@ -37,7 +37,6 @@ class Connexion
             throw new \Exception("La socket n'est pas ouverte.'");
         }
         $input = fgets($this->socket);
-        echo $input;
         return $input;
     }
     
@@ -47,7 +46,6 @@ class Connexion
             throw new \Exception("La socket n'est pas ouverte.'");
         }
         foreach ($messages as $message) {
-            echo implode(' ', $message)."\n";
             fputs($this->socket, $message[0]." ".$message[1]."\r\n");
         }
     }

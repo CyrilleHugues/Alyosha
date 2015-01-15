@@ -74,7 +74,6 @@ class ChatModule implements ModuleInterface
 			$possible_next_words = $this->brain[$word];
 
 			$word = $possible_next_words[array_rand($possible_next_words)];
-			print "chosen word: $word\n";
 			$chain[] = $word;
 		}
 
