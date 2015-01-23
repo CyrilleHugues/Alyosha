@@ -23,7 +23,9 @@ class EventDispatcher implements ModuleInterface
 
         if ( ! $this->checkIfModulesAreCompatible($this->modules)){
             print "One module does not implement ModuleInterface.\n";
-            exit();
+            $this->willHalt = true;
+            $this->modules = [];
+            return;
         }
 
         foreach ($this->modules as $key => $module) {
