@@ -2,9 +2,6 @@
 
 namespace Alyosha\Core;
 
-use Alyosha\Modules\IRC\IrcModule;
-use Alyosha\Modules\Chatbot\ChatModule;
-
 /**
  * EventDispatcher is a class referencing all the modules of the bot.
  * Its the heart of the app, beating and irrigating modules with events
