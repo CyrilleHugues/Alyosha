@@ -40,7 +40,6 @@ class EventDispatcher implements ModuleInterface
     public function checkIfModulesAreCompatible(array $modules) {
         foreach ($modules as $module) {
             if ( ! $module instanceof ModuleInterface){
-                var_dump($module);
                 return false;
             }
         }
