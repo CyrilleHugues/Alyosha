@@ -4,7 +4,8 @@ namespace Alyosha;
 
 use Alyosha\Core\EventDispatcher;
 use Alyosha\Modules\IRC\IrcModule;
-use Alyosha\Modules\Chatbot\ChatModule;
+use Alyosha\Modules\BotAdmin\BotAdminModule;
+use Alyosha\Modules\IrcSecurity\IrcSecurityModule;
 
 class Alyosha
 {
@@ -14,7 +15,8 @@ class Alyosha
     {
         $modules = [
             new IrcModule(),
-            new ChatModule(),
+            new IrcSecurityModule,
+            new BotAdminModule(),
         ];
 		$this->ed = new EventDispatcher($modules);
 	}

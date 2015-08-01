@@ -2,7 +2,7 @@
 
 namespace Alyosha\Modules\IRC;
 
-use Alyosha\Config;
+use Alyosha\Core\Config;
 
 class Connexion
 {
@@ -11,7 +11,7 @@ class Connexion
 	private $port;
 	private static $connexion;
 
-	private function __construct($server, $port = 6667)
+	public function __construct($server, $port = 6667)
 	{
         $this->server = $server;
         $this->port = $port;
@@ -46,15 +46,7 @@ class Connexion
             throw new \Exception("La socket n'est pas ouverte.'");
         }
         foreach ($messages as $message) {
-            fputs($this->socket, $message[0]." ".$message[1]."\r\n");
+            fputs($this->socket, $message."\r\n");
         }
-    }
-
-    public static function getInstance()
-    {
-    	if (self::$connexion === null) {
-            self::$connexion = new Connexion(Config::$cfg['server'], Config::$cfg['port']);
-    	}
-        return self::$connexion;
     }
 }

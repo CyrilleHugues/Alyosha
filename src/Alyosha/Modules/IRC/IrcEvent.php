@@ -6,18 +6,18 @@ use Alyosha\Core\Event;
 
 class IrcEvent extends Event
 {
-	private $username = null;
-	private $hostname = null;
+    protected $username = null;
+	protected $hostname = null;
 
 	/** kick, privmsg, etc... */
-	private $action = null;
+	protected $action = null;
 
-	private $channel = null;
+	protected $channel = null;
 
 	/** like the target of a kick */
-	private $target = null;
+	protected $target = null;
 
-	private $message = null;
+	protected $message = null;
 
 	public function __construct($name = "")
 	{

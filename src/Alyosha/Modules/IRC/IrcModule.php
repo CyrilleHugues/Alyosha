@@ -3,17 +3,12 @@
 namespace Alyosha\Modules\IRC;
 
 use Alyosha\Core\Event;
-use Alyosha\Core\ModuleInterface;
+use Alyosha\Core\Module;
 
-class IrcModule implements ModuleInterface
+class IrcModule extends Module
 {
 	private $connexion;
 	private $events = [];
-
-	public function __construct()
-	{
-		$this->connexion = Connexion::getInstance();
-	}
 
     public function getName()
     {
@@ -22,6 +17,10 @@ class IrcModule implements ModuleInterface
 
 	public function fire()
 	{
+        $this->connexion = new Connexion(
+            $this->config['irc']['server'],
+            $this->config['irc']['port']
+        );
 		$this->connexion->fire();
 	}
 
@@ -29,15 +28,21 @@ class IrcModule implements ModuleInterface
 	{
 		return [
 			"irc.publish",
+            "irc.command",
 		];
 	}
 
 	public function notify(Event $event){
-        if ($event->getName() == "irc.publish"){
-            $this->connexion->send([
-                ["PRIVMSG", $event->getChannel()." :".$event->getMessage()]
-            ]);
+        switch ($event->getName()){
+            case 'irc.publish':
+                $this->connexion->send(["PRIVMSG ".$event->getChannel()." :".$event->getMessage()]);
+                break;
+            case 'irc.command':
+                $this->connexion->send([$event->getCommand()]);
+                break;
         }
+
+        return;
     }
 
 	public function getEvents()
@@ -49,6 +54,7 @@ class IrcModule implements ModuleInterface
 		// ALWAYS do your own treatment before notifying other modules
 		$this->preTreatment($event);
 		$events = $this->generateEvents($event);
+
 		return $events;
 	}
 
@@ -60,6 +66,7 @@ class IrcModule implements ModuleInterface
             if ($event->getChannel() == Config::getParam("nickname")) {
                 $e = $event->clone_ev();
                 $e->setName("irc.private_message");
+                $e->setChannel($e->getUsername());
                 $events[] = $e;
             } else {
                 $e = $event->clone_ev();
@@ -160,26 +167,14 @@ class IrcModule implements ModuleInterface
 	private function preTreatment(IrcEvent $event)
 	{
         if ($event->getAction() == "ping") {
-            $this->connexion->send([["PONG", $event->getMessage()]]);
+            $this->connexion->send(["PONG ".$event->getMessage()]);
         }
         if ($event->getAction() == "ident") {
             $username = Config::getParam('nickname', "Tanche_".rand());
 
             $this->connexion->send([
-                ["NICK", $username],
-                ["USER","$username localhost.com $username :$username"],
-            ]);
-        }
-        if ($event->getAction() == "motd_end"){
-            $this->connexion->send([
-                ["JOIN", "#pulco"]
-            ]);
-        }
-
-        /** @Todo remove this code */
-        if ($event->getAction() == "invite" && $event->getTarget() == Config::getParam("nickname")){
-            $this->connexion->send([
-                ["JOIN", $event->getChannel()]
+                "NICK ".$username,
+                "USER $username localhost.com $username :$username",
             ]);
         }
 	}

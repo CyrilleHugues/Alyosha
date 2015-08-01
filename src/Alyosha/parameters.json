@@ -1,0 +1,12 @@
+{
+    "irc": {
+        "server": "irc.iiens.net",
+        "port": 6667,
+        "nickname": "Alyosha",
+        "adminPassword": "malcom",
+        "chans": [
+            "#neet"
+        ]
+    }
+
+}
