@@ -51,11 +51,10 @@ abstract class Kernel
 
     public function run()
     {
-		while (!$this->ed->willHalt()) {
+		while (!$this->dispatcher->shouldHalt) {
 			$this->dispatcher->beat();
             // Wait to lessen cpu charge
             usleep(50000);
 		}
-
 	}
 }

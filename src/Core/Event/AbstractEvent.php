@@ -2,7 +2,6 @@
 
 namespace Alyosha\Core\Event;
 
-class AbstractEvent
+abstract class AbstractEvent implements EventInterface
 {
-
 } 

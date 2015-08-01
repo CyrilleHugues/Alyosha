@@ -2,6 +2,8 @@
 
 namespace Alyosha\Core\EventDispatcher;
 
+use Alyosha\Core\Event\EventInterface;
+use Alyosha\Core\KernelEvents;
 use Alyosha\Core\Module\ModuleInterface;
 
 class Dispatcher
@@ -11,7 +13,15 @@ class Dispatcher
      */
     protected $modules;
 
+    /**
+     * @var ModuleInterface[][]
+     */
     protected $subscribers;
+
+    /**
+     * @param bool
+     */
+    public $shouldHalt;
 
     /**
      * @param ModuleInterface[] $modules
@@ -37,16 +47,52 @@ class Dispatcher
         $this->consumeEvents($events);
     }
 
-    public function retrieveEvents()
+    /**
+     * @return EventInterface[]
+     */
+    protected function retrieveEvents()
     {
         $events = [];
         foreach ($this->modules as $module){
             $moduleEvents = $module->getEvents();
 
             if (empty($moduleEvents)) continue;
-            $events->
+            $events = array_merge($events, $moduleEvents);
         }
 
         return $events;
+    }
+
+    /**
+     * @param EventInterface[] $events
+     */
+    protected function consumeEvents(array $events)
+    {
+        foreach ($events as $event) {
+            $this->handleKernelEvents($event);
+            $this->notifySubscribers($event);
+        }
+    }
+
+    /**
+     * @param EventInterface $event
+     */
+    protected function handleKernelEvents(EventInterface $event)
+    {
+        if (KernelEvents::HALT === $event->getName())
+            $this->shouldHalt = true;
+    }
+
+    /**
+     * @param EventInterface $event
+     */
+    protected function notifySubscribers(EventInterface $event)
+    {
+        $eventName = $event->getName();
+        if (array_key_exists($eventName, $this->subscribers) && !empty($this->subscribers[$eventName])){
+            foreach ($this->subscribers[$eventName] as $module) {
+                $module->notify($event);
+            }
+        }
     }
 }
