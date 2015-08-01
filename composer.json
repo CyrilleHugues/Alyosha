@@ -6,13 +6,17 @@
             "email": "cyrille.hugues@gmail.com"
         }
     ],
-    "description": "ToDo",
+    "description": "PHP framework for bots",
     "license": "MIT",
     "require": {
-    	"php": ">=5.3.2",
-        "phpunit/phpunit": "~4.4"
+        "php": ">=5.4",
+        "phpunit/phpunit": "~4.7",
+        "phpspec/prophecy": "~1.4",
+        "monolog/monolog": "~1.15",
+        "webmozart/console": "~1.0@beta",
+        "symfony/yaml": "~2.7"
     },
     "autoload": {
-    	"psr-4": {"Alyosha\\": "src/Alyosha"}
+        "psr-4": {"Alyosha\\": "src/"}
     }
 }

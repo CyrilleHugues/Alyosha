@@ -1,9 +1,8 @@
 <?php
 
-namespace Alyosha\Core;
+namespace Alyosha\Core\Event;
 
 interface EventInterface
 {
-    public function isHaltSignal();
     public function getName();
-}
+} 
