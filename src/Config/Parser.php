@@ -2,7 +2,6 @@
 
 namespace Alyosha\Config;
 
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 class Parser

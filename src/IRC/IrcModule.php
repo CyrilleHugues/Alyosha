@@ -77,7 +77,8 @@ class IrcModule extends AbstractModule
     {
         if ($event instanceof IrcCommandEvent) {
             $server = $event->getServer();
-            $server->execute($event->getCommand());
+            if (array_key_exists($server, $this->servers))
+                $this->servers[$server]->execute($event->getCommand());
         }
     }
 }

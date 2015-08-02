@@ -2,6 +2,7 @@
 
 use Alyosha\IRC\IrcModule;
 use Alyosha\Time\TimeModule;
+use Alyosha\IrcAdmin\IrcAdminModule;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -12,6 +13,7 @@ class AppKernel extends Alyosha\Core\Kernel
         return [
             new IrcModule(),
             new TimeModule(),
+            new IrcAdminModule(),
         ];
     }
 }

@@ -4,20 +4,19 @@ namespace Alyosha\IRC\Event\Command;
 
 class QuitCommand extends AbstractIrcCommand
 {
-    const COMMAND = 'QUIT %s %s';
+    const COMMAND = 'QUIT :%s';
 
     protected $channel;
     protected $message;
 
-    public function __construct($server, $channel, $message = '')
+    public function __construct($server, $message = '')
     {
         $this->server = $server;
-        $this->channel = $channel;
         $this->message = $message;
     }
     public function getCommand()
     {
-        return sprintf(self::COMMAND, $this->channel, $this->message);
+        return sprintf(self::COMMAND, $this->message);
     }
 
     public function getCommandName()

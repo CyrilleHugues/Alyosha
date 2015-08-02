@@ -90,6 +90,9 @@ class Server
         return $internalEvent;
     }
 
+    /**
+     * @param string $command
+     */
     public function execute($command)
     {
         $this->connection->send($command);

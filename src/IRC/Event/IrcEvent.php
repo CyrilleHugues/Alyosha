@@ -33,4 +33,9 @@ class IrcEvent extends AbstractEvent
     {
         return $this->ircMessage;
     }
+
+    public function getServer()
+    {
+        return $this->ircMessage->getServer();
+    }
 }

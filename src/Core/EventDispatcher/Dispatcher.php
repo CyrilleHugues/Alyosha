@@ -90,8 +90,8 @@ class Dispatcher
     {
         $eventName = $event->getName();
         if (array_key_exists($eventName, $this->subscribers) && !empty($this->subscribers[$eventName])){
-            foreach ($this->subscribers[$eventName] as $module) {
-                $module->notify($event);
+            foreach ($this->subscribers[$eventName] as $moduleName) {
+                $this->modules[$moduleName]->notify($event);
             }
         }
     }
