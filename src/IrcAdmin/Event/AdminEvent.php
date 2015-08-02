@@ -7,6 +7,9 @@ use Alyosha\IrcAdmin\IrcAdminModule;
 
 class AdminEvent extends IrcEvent
 {
+    /**
+     * @return string
+     */
     public function getName()
     {
         return IrcAdminModule::NAME.'.admin.'.$this->name;

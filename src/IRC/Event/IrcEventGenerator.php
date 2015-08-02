@@ -12,6 +12,12 @@ class IrcEventGenerator
     const PUBLIC_MESSAGE = 'public_message';
     const HILIGHT_MESSAGE = 'hilight_message';
 
+    /**
+     * @param $nickname
+     * @param IrcMessage $ircMessage
+     *
+     * @return array
+     */
     public function generate($nickname, IrcMessage $ircMessage)
     {
         $events = [];

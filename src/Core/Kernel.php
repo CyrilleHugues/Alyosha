@@ -38,6 +38,9 @@ abstract class Kernel
      */
     protected abstract function registerModules();
 
+    /**
+     * @param $config
+     */
     protected function setUpModules($config)
     {
         $modules = $this->registerModules();

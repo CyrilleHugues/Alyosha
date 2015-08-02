@@ -28,10 +28,13 @@ class IrcAdminModule extends AbstractModule
     protected $authenticator;
 
     /**
-     * @var EventInterface
+     * @var EventInterface[]
      */
     protected $events;
 
+    /**
+     * @param array $config
+     */
     public function start(array $config)
     {
         $this->authenticator = new Authenticator($config['security']['password']);
@@ -45,6 +48,9 @@ class IrcAdminModule extends AbstractModule
         return self::NAME;
     }
 
+    /**
+     * @return array
+     */
     public function getSubscriptions()
     {
         return [
@@ -54,6 +60,9 @@ class IrcAdminModule extends AbstractModule
         ];
     }
 
+    /**
+     * @param EventInterface $event
+     */
     public function notify(EventInterface $event)
     {
         if ($event instanceof IrcEvent) {
@@ -69,6 +78,9 @@ class IrcAdminModule extends AbstractModule
         }
     }
 
+    /**
+     * @param IrcEvent $event
+     */
     public function handleEvent(IrcEvent $event)
     {
         $message = $event->getIrcMessage()->getMessage();
@@ -82,6 +94,11 @@ class IrcAdminModule extends AbstractModule
         }
     }
 
+    /**
+     * @param IrcEvent $event
+     * @param string $commandName
+     * @param array $args
+     */
     public function handleCommand(IrcEvent $event, $commandName, $args)
     {
         $command = null;
@@ -107,12 +124,18 @@ class IrcAdminModule extends AbstractModule
             $this->createCommandEvent($command);
     }
 
+    /**
+     * @param IrcCommandInterface $command
+     */
     public function createCommandEvent(IrcCommandInterface $command)
     {
         $ircCommandEvent = new IrcCommandEvent($command);
         $this->events[] = $ircCommandEvent;
     }
 
+    /**
+     * @return EventInterface[]
+     */
     public function getEvents()
     {
         $events = $this->events;
@@ -120,11 +143,17 @@ class IrcAdminModule extends AbstractModule
         return $events;
     }
 
+    /**
+     * @param IrcEvent $event
+     */
     public function createAuthEvent(IrcEvent $event)
     {
         $this->events[] = new AdminEvent('message', $event->getIrcMessage());
     }
 
+    /**
+     * @param IrcEvent $event
+     */
     public function isNewAuthEvent(IrcEvent $event)
     {
         $welcomeCommand = new MessageCommand(

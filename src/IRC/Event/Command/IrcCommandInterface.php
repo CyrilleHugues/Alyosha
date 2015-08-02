@@ -11,9 +11,18 @@ namespace Alyosha\IRC\Event\Command;
 
 interface IrcCommandInterface
 {
+    /**
+     * @return string
+     */
     public function getCommand();
 
+    /**
+     * @return string
+     */
     public function getCommandName();
 
+    /**
+     * @return string
+     */
     public function getServer();
 }

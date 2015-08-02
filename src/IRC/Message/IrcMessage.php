@@ -29,6 +29,14 @@ class IrcMessage
     protected $message;
     protected $server;
 
+    /**
+     * @param string $type
+     * @param string $username
+     * @param string $hostname
+     * @param string $channel
+     * @param string $message
+     * @param string $target
+     */
     public function __construct(
         $type = null,
         $username = null,
@@ -46,7 +54,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $server
+     * @param string $server
      */
     public function setServer($server)
     {
@@ -54,7 +62,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getServer()
     {
@@ -62,7 +70,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $channel
+     * @param string $channel
      */
     public function setChannel($channel)
     {
@@ -70,7 +78,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getChannel()
     {
@@ -78,7 +86,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $hostname
+     * @param string $hostname
      */
     public function setHostname($hostname)
     {
@@ -86,7 +94,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getHostname()
     {
@@ -94,7 +102,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $message
+     * @param string $message
      */
     public function setMessage($message)
     {
@@ -102,7 +110,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMessage()
     {
@@ -110,7 +118,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $target
+     * @param string $target
      */
     public function setTarget($target)
     {
@@ -118,7 +126,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTarget()
     {
@@ -126,7 +134,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
     public function setType($type)
     {
@@ -134,7 +142,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {
@@ -142,7 +150,7 @@ class IrcMessage
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -150,7 +158,7 @@ class IrcMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUsername()
     {

@@ -6,20 +6,40 @@ use Alyosha\IRC\Event\IrcEvent;
 
 class Authenticator
 {
+    /**
+     * @var string
+     */
     protected $password;
+
+    /**
+     * @var array
+     */
     protected $authorizedHostnames = [];
 
+    /**
+     * @param $password
+     */
     public function __construct($password)
     {
         $this->password = $password;
     }
 
+    /**
+     * @param IrcEvent $event
+     *
+     * @return bool
+     */
     public function isAdmin(IrcEvent $event)
     {
         $hostname = $event->getIrcMessage()->getHostname();
         return in_array($hostname, $this->authorizedHostnames);
     }
 
+    /**
+     * @param IrcEvent $event
+     *
+     * @return bool
+     */
     public function auth(IrcEvent $event)
     {
         $matches = [];

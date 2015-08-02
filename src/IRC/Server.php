@@ -55,6 +55,9 @@ class Server
         $this->ircEventGenerator = new IrcEventGenerator();
     }
 
+    /**
+     * @return array
+     */
     public function getEvents()
     {
         $input = $this->connection->receive();
@@ -67,6 +70,11 @@ class Server
         return [];
     }
 
+    /**
+     * @param IrcMessage $ircMessage
+     *
+     * @return bool
+     */
     protected function isInternalEvent(IrcMessage $ircMessage)
     {
         $internalEvent = false;

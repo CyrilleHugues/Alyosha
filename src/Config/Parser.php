@@ -27,4 +27,4 @@ class Parser
     {
         return $this->config;
     }
-} 
+}
