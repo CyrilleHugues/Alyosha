@@ -11,17 +11,17 @@ class Dispatcher
     /**
      * @var ModuleInterface[]
      */
-    protected $modules;
+    protected $modules = [];
 
     /**
      * @var ModuleInterface[][]
      */
-    protected $subscribers;
+    protected $subscribers = [];
 
     /**
      * @param bool
      */
-    public $shouldHalt;
+    public $shouldHalt = false;
 
     /**
      * @param ModuleInterface[] $modules

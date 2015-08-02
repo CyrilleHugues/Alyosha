@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class Parser
 {
-    /** @var string */
+    /** @var array */
     protected $config;
 
     /**
@@ -17,7 +17,7 @@ class Parser
      */
     public function __construct($filename)
     {
-        if (trim($filename) !== '' || file_exists($filename)){
+        if (trim($filename) == '' || !file_exists($filename)){
             throw new \Exception('Configuration file is not configured correctly');
         }
 

@@ -23,12 +23,11 @@ abstract class Kernel
      */
     protected $dispatcher;
 
-    public function __construct($configFileName, $debugMode = false)
+    public function __construct($configFileName)
     {
         /** @var array $config */
         $parser = new Parser($configFileName);
         $config = $parser->getConfig();
-
         $this->setUpModules($config);
     }
 

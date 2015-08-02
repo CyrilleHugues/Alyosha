@@ -1,0 +1,9 @@
+irc:
+  password: pass
+  servers:
+    iiens:
+      address: irc.iiens.net
+      port: 6667
+      nickname: Alyosha
+      chans:
+        - neet
