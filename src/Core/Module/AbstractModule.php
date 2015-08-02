@@ -7,6 +7,13 @@ use Alyosha\Core\Event\EventInterface;
 abstract class AbstractModule implements ModuleInterface
 {
     /**
+     * Start the module by creating sockets and such actions with the given config
+     */
+    public function start(array $config)
+    {
+    }
+
+    /**
      * Return events created during the notification phase
      *
      * @return EventInterface[]

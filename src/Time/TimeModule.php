@@ -7,7 +7,7 @@ use Alyosha\Core\Module\AbstractModule;
 
 class TimeModule extends AbstractModule
 {
-    const NAME = 'time_bringer';
+    const NAME = 'time_module';
 
     protected $lastDate;
 
@@ -37,7 +37,7 @@ class TimeModule extends AbstractModule
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         if ($this->lastDate->format('Y-m-d H:i') !== $now->format('Y-m-d H:i')) {
             $this->lastDate = $now;
-            var_dump(new TimeEvent($now));
+
             return [
                 new TimeEvent($now)
             ];
