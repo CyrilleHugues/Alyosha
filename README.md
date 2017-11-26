@@ -151,31 +151,6 @@ Let's change that.
 
 ### Scripting
 
-#### Introduction
-
-For this, you need some knowledge about event-driven development, go learn it on internet.
-If you're lazy, just imagine this bot is like your bank. You want to transfer some money to a friend.
-
--   You ask the bank by mail to add your friend's account to the list of account you can transfer money to.
--   The bank notify you after a while a new account is available in the list
--   You ask the bank by mail to transfer some money on it.
--   The bank send money to your friend's bank and specify it's from you to your friend
--   The bank notify you it's done.
-
-Simple. But imagine now, you are making this operation for hundreds of friends in the same time,
-sending mails for each. The consequences are:
-
--   You sent tons of order by mail to your bank, some of them for adding account, some for transfering money.
--   If the bank wasn't treating every mail independantly, the last friend will be waiting for ages.
--   The bank also sended mails to other banks.
--   The bank may receive the transfer order before adding the account to the list. It will refuse them.
-
-So Alyosha is basically the postal service, the modules are a bank and the input from IRC, or whatever else is you.
-And this might be a mess if kept unchecked. As you are scripting, document in every modules which events you're
-listening to and what is your workflow with them.
-
-Didn't understand a bit ? Sorry, but I don't want to spend more time on it as this is not the place.
-
 #### Configuring composer to autoload our classes
 
 Look, i'm not a monster to send scripting like it's PHP4 with `include` and `require`.
